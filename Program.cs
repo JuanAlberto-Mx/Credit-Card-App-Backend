@@ -6,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options => options.AddPolicy("AllowedApp", builder => builder.AllowAnyOrigin()
+																						  .AllowAnyHeader()
+																						  .AllowAnyMethod()));
 
 // Binding the startup file to recognize the configurations made
 var startup = new Startup(builder.Configuration);
@@ -17,5 +20,6 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "credit-card-app-backend"));
+app.UseCors("AllowedApp");
 app.MapControllers();
 app.Run();

@@ -27,6 +27,10 @@ namespace credit_card_app_backend
 			services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
 
 			services.AddHttpContextAccessor();
+
+			services.AddCors(options => options.AddPolicy("AllowedApp", builder => builder.AllowAnyOrigin()
+																						  .AllowAnyHeader()
+																						  .AllowAnyMethod()));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +41,7 @@ namespace credit_card_app_backend
 				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "credit-card-app-backend"));
+				app.UseCors("AllowedApp");
 			}
 			else
 			{
